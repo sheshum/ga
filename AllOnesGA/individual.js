@@ -39,7 +39,6 @@ var Individual = function(chromosome) {
 	 * 
 	 * @param gene
 	 * @param offset
-	 * @return gene
 	 */
     function setGene(offset, gene) {
         this.chromosome[offset] = gene;
