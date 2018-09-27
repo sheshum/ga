@@ -23,14 +23,41 @@
  */
 
 var Individual = function(chromosome) {
-    this.chromosome = chromosome;
+
+    if(chromosome) this.chromosome = chromosome;
+    else this.chromosome = []; 
     this.fitness = -1;
 
-    function getChromosome() {
+    /**
+	 * Initializes random individual.
+	 * 
+	 * This method assumes that the chromosome is made entirely of 0s and
+	 * 1s, which may not always be the case, so make sure to modify as
+	 * necessary. This method also assumes that a "random" chromosome means
+	 * simply picking random zeroes and ones, which also may not be the case
+	 * (for instance, in a traveling salesman problem, this would be an invalid
+	 * solution).
+	 * 
+	 * @param {Number} chromosomeLength
+	 *            The length of the individuals chromosome
+	 */
+    this.init = function(chromosomeLength) {
+        this.chromosome = [];
+        
+        for(let offset = 0; offset < chromosomeLength; offset++) {
+            if(Math.random() > 0.5) {
+                this.setGene(offset, 1);
+            } else {
+                this.setGene(offset, 0);
+            }
+        }
+    }
+
+    this.getChromosome = function() {
         return this.chromosome;
     }
 
-    function getChromosomeLength() {
+    this.getChromosomeLength = function() {
         return this.chromosome.length;
     }
 
@@ -40,7 +67,7 @@ var Individual = function(chromosome) {
 	 * @param gene
 	 * @param offset
 	 */
-    function setGene(offset, gene) {
+    this.setGene = function(offset, gene) {
         this.chromosome[offset] = gene;
     }
 
@@ -50,19 +77,24 @@ var Individual = function(chromosome) {
 	 * @param offset
 	 * @return gene
 	 */
-    function getGene(offset) {
+    this.getGene = function(offset) {
         return this.chromosome[offset];
     }
 
-    function setFitness(fitness) {
+    this.setFitness = function(fitness) {
         this.fitness = fitness;
     }
 
-    function getFitness() {
+    this.getFitness = function() {
         return this.fitness;
     }
 
-    function _toString() {
+    /**
+	 * Display the chromosome as a string.
+	 * 
+	 * @return string representation of the chromosome
+	 */
+    this._toString = function() {
         var _output = "";
 
         for(let i = 0; i < this.chromosome.length; i++) {
