@@ -45,7 +45,7 @@ var Individual = function(chromosome) {
         this.chromosome = [];
         
         for(let offset = 0; offset < chromosomeLength; offset++) {
-            if(Math.random() > 0.5) {
+            if(0.5 < Math.random()) {
                 this.setGene(offset, 1);
             } else {
                 this.setGene(offset, 0);
