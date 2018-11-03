@@ -12,13 +12,6 @@
 const Maze = require('./maze');
 const GeneticAlgorithm = require('./ga');
 
-/**
- * Upper bound for the number of generations to run for. 200 generations is
- * sufficient to find the path about 50% of the time, but for demonstration
- * purposes we've set this high by default.
- */
-var maxGenerations = 1000;
-
 
 /**
  * 
@@ -60,30 +53,47 @@ var maze = new Maze([
     [ 1, 3, 3, 3, 3, 1, 1, 1, 4 ]
 ]);
 
-var ga = new GeneticAlgorithm(200, 0.05, 0.9, 2, 10);
+/**
+ * Upper bound for the number of generations to run for. 200 generations is
+ * sufficient to find the path about 50% of the time, but for demonstration
+ * purposes we've set this high by default.
+ */
+var maxGenerations = 1000;
 
-// TODO: Initialize population
-// var population = ga.initPopulation(128);
 
-// TODO: Evaluate population
+let ga = new GeneticAlgorithm( 200, 0.05, 0.9, 2, 10 );
+
+// Initialize population
+let population = ga.initPopulation( 128 );
+
+// Evaluate population
+ga.evalPopulation( population, maze );
 
 let generation = 1;
 
 // Start evolution loop
-while(/* TODO */false) {
-    // TODO: Print fittest individual from population
+while(ga.isTerminationConditionMet(generation, maxGenerations) == false) {
+    // Print fittest individual from population
+    var fittest = population.getFittest(0);
+    console.log(`Gen ${generation}, Best solution F(${fittest.getFitness()}): [ ${fittest._toString()} ]` );
 
-    // TODO: Apply crossover
+    // Apply crossover
+    population = ga.crossoverPopulation(population);
 
-    // TODO: Apply mutation
+    // Apply mutation
+    population = ga.mutatePopulation(population);
 
-    // TODO: Evaluate population
+    // Evaluate population
+    ga.evalPopulation( population, maze );
 
     // Increment the current generation
     generation++;
 }
 
-// TODO: Print results
+// Print results
+console.log(`Stopped after ${generation - 1} generations.`);
+var fittest = population.getFittest(0);
+console.log(`Best solution F(${fittest.getFitness()}): [ ${fittest._toString()} ]`);
 
 
 

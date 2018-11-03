@@ -18,17 +18,18 @@
  "use strict";
 
  class Individual {
-    chromosome = [];
-    fitness = -1;
+    
     constructor(chromosomeLength) {
-        initializeChromosome(chromosomeLength);
+        this.chromosome = [];
+        this.fitness = -1;
+        initializeChromosome.call(this, chromosomeLength);
     }
 
-    getChromosome = function() {
+    getChromosome() {
         return this.chromosome;
     }
 
-    getChromosomeLength = function() {
+    getChromosomeLength() {
         return this.chromosome.length;
     }
 
@@ -39,11 +40,11 @@
         return this.chromosome[offset];
     }
 
-    setFitness = function(fitness) {
+    setFitness(fitness) {
         this.fitness = fitness;
     }
 
-    getFitness = function() {
+    getFitness() {
         return this.fitness;
     }
 
@@ -52,7 +53,7 @@
 	 * 
 	 * @return string representation of the chromosome
 	 */
-    _toString = function() {
+    _toString() {
         var _output = "";
 
         for(let i = 0; i < this.chromosome.length; i++) {
@@ -60,7 +61,7 @@
         }
         return _output;
     }
- }
+ };
 
 /**
  * Initializes random individual.
@@ -84,6 +85,6 @@
                 this.setGene(geneIndex, 0);
             }
     }
- }
+ };
 
  module.exports = Individual;

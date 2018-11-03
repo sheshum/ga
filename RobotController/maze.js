@@ -20,7 +20,7 @@
 class Maze {
     constructor(maze) {
         this.maze = maze;
-        this.startingPosition = [-1, -1];
+        this.startingPosition = { x: -1, y: -1};
     }
 
     /**
@@ -28,12 +28,79 @@ class Maze {
 	 * 
 	 * @return integer Array x,y start position of maze
 	 */
-    getStartingPosition() {}
-    getPositionValue() {}
-    isWall() {}
-    getMaxX() {}
-    getMaxY() {}
-    scoreRoute(route) {}
+    getStartingPosition() {
+        if (this.startingPosition.x != -1 && this.startingPosition.y != -1) {
+            return this.startingPosition;
+        }
+
+        // Default return value
+        let _startPos = { x: 8, y: 0};
+
+        // Loop over rows
+        for( let row = 0; row < this.maze.length; row++) {
+            // Loop over columns
+            for(let col = 0; col < this.maze[row].length; col++) {
+                // 2 is the type for start position
+                if(this.maze[row][col] == 2) {
+                    this.startingPosition = { x: col, y: row };
+                    return { x: col, y: row };
+                }
+            }
+        }
+
+        return _startPos;
+    }
+
+    getPositionValue(x, y) {
+        let retVal = null;
+        if (x < 0 || y < 0 || x >= this.maze.length ||
+            y >= this.maze.length) {
+                return 1;
+        }
+        try {
+            retVal = this.maze[y][x];
+        } catch (error) {
+            console.log(error);
+        }
+        return retVal;
+    }
+
+    isWall(x, y) {
+        return (this.getPositionValue(x, y) == 1)
+    }
+
+    getMaxX() {
+        return this.maze[0].length - 1;
+    }
+    getMaxY() {
+        return this.maze.length - 1;
+    }
+
+    /**
+     * 
+     * @param {Array} route 
+     */
+    scoreRoute(route) {
+        var score = 0;
+        var visited = Array.from(Array(9), () => new Array(9).fill(false));
+        var cond = route.length;
+        // Loop over and score each move
+        route.forEach(function(routeStep) {
+            var step = routeStep;
+
+            if(this.maze[step.y][step.x] == 3 && 
+                visited[step.y][step.x] == false) {
+                
+                // Increase score for correct move
+                score++;
+
+                // Remove reward
+                visited[step.y][step.x] = true;
+            }
+        }, this);
+
+        return score;
+    }
 }
 
 module.exports = Maze;

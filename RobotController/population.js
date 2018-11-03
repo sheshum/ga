@@ -10,38 +10,41 @@
 const Individual = require('./individual');
 
 class Population {
-    _individuals = [];
-    populationFitness = -1;
+    
 
-    constructor() {
-
+    constructor(populationSize, chromosomeLength) {
+        this._individuals = [];
+        this.populationFitness = -1;
+        createPopulation.call(this, populationSize, chromosomeLength)
     }
 
-    init = function(populationSize, chromosomeLength) {
+    init(populationSize, chromosomeLength) {
         for(let count = 0; count < populationSize; count++) {
-            var individual = new Individual();
-            individual.init(chromosomeLength);
+            var individual = new Individual(chromosomeLength);
             this._individuals.push(individual);
         }
     }
 
-    getIndividuals = function() {
+    getIndividuals() {
         return this._individuals;
     }
 
-    getSize = function() {
+    getSize() {
         return this._individuals.length;
     }
+    getIndividual(offset) {
+        return this._individuals[offset];
+    }
 
-    setIndividual = function(offset, individual) {
+    setIndividual(offset, individual) {
         this._individuals[offset] = individual;
     }
 
-    setPopulationFitness =  function(populationFitness) {
+    setPopulationFitness(populationFitness) {
         this.populationFitness = populationFitness;
     }
 
-    getPopulationFitness = function() {
+    getPopulationFitness() {
         return this.populationFitness;
     }
 
@@ -59,7 +62,7 @@ class Population {
 	 *            the strongest, population.length - 1 is the weakest.
 	 * @return individual Individual at offset
 	 */
-    getFittest = function(offset) {
+    getFittest(offset) {
         this._individuals.sort((o1, o2) => {
             if(o1.getFitness() > o2.getFitness()) {
                 return -1;
@@ -71,6 +74,33 @@ class Population {
 
         return this._individuals[offset];
     }
+
+     /**
+	 * Shuffles the population in-place
+	 * 
+	 * @param void
+	 * @return void
+	 */
+    shuffle() {
+       
+        for (let i = 0; i < this._individuals.length; i++) {
+            let index = getRandomInt( i + 1 );
+            let a = this._individuals[index];
+            this._individuals[index] = this._individuals[i];
+            this._individuals[i] = a;
+        }
+    }
+};
+
+function createPopulation(populationSize, chromosomeLength) {
+    for(let count = 0; count < populationSize; count++) {
+        var individual = new Individual(chromosomeLength);
+        this._individuals.push(individual);
+    }
+};
+
+function getRandomInt(max) {
+    return Math.floor(Math.random() * Math.floor(max));
 }
 
 module.exports = Population;
