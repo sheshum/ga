@@ -1,8 +1,9 @@
-const http  = require('http'),
-      url   = require('url'),
-      fs    = require('fs'),
-      path  = require('path'),
-      port  = 5000;
+const http      = require('http'),
+      url       = require('url'),
+      fs        = require('fs'),
+      path      = require('path'),
+      router    = require('./lib/router.js'),
+      port      = 5000;
 
 let fileExtensions = {
     'html':'text/html',
@@ -14,15 +15,30 @@ let fileExtensions = {
     'wav':'audio/wav'
 }
 
+// TODO: Create wrapper for server and apply middleware
+// to add router to server
+router.get('/routes', function() {
+    require('./main.js');
+});
+
 const requestHandler = ( req, res ) => {
   // Move implementation from createServer() to here
 }
 
+// TODO: Move server implementation to requestHandler method
 let server = http.createServer((req, res) => {
+    let reqMethod = req.method.toLowerCase();
     let parsedUrl = url.parse(req.url, true);
 
     let reqFile = parsedUrl.pathname;
     let ext = path.extname(reqFile).replace('.', '');
+
+    // TODO: apply middleware instead of this
+    let execMethod = router.routes[reqMethod][parsedUrl.pathname];
+
+    if ( execMethod ) {
+        execMethod();
+    }
 
     if (parsedUrl.path === '/') {
         let indexHtml = fs.readFileSync(path.join(__dirname, './dist/index.html'));

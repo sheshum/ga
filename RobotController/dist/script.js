@@ -2,7 +2,7 @@
 function getGAResults() {
     axios({
         method: 'get',
-        url: 'routes.json',
+        url: 'http://localhost:5000/routes',
         responseType: 'json',
         responseEncoding: 'utf8'
     })
