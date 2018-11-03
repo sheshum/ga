@@ -28,7 +28,9 @@ class Robot {
         this.maxMoves = maxMoves;
         this.moves = 0;
         this.route = [];
+        this.drawingRoute = [];
         this.route.push({x: startPos.x, y: startPos.y});
+        this.drawingRoute.push({ move: { x: startPos.x, y: startPos.y } });
     }
 
     run() {
@@ -128,6 +130,7 @@ class Robot {
                 if(currentX !== this.xPosition || currentY !== this.yPosition) {
                     var pos = this.getPosition();
                     this.route.push({ x: pos.x, y: pos.y});
+                    this.drawingRoute.push({ move: { x: pos.x, y: pos.y } });
                 }
             }
         }
@@ -145,6 +148,7 @@ class Robot {
             else if(this.DIRECTION.WEST == this.heading) {
                 this.heading = this.DIRECTION.NORTH;
             }
+            this.drawingRoute.push( { turn: { clockwise: true } } );
         }
         // Move anti-ckockwise
         else if (_nextAction == 3) {
@@ -160,6 +164,7 @@ class Robot {
             else if(this.DIRECTION.WEST == this.heading) {
                 this.heading = this.DIRECTION.SOUTH;
             }
+            this.drawingRoute.push( { turn: { clockwise: false } } );
         }
 
         // Reset sensor value
@@ -266,6 +271,10 @@ class Robot {
 
     getRoute() {
         return this.route;
+    }
+
+    getDrawingRoute() {
+        return this.drawingRoute;
     }
 
     printRoute() {

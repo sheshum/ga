@@ -22,6 +22,7 @@
     constructor(chromosomeLength) {
         this.chromosome = [];
         this.fitness = -1;
+        this.drawingRoute = [];
         initializeChromosome.call(this, chromosomeLength);
     }
 
@@ -46,6 +47,14 @@
 
     getFitness() {
         return this.fitness;
+    }
+
+    setDrawingRoute(route) {
+        this.drawingRoute = route;
+    }
+
+    getDrawingRoute() {
+        return this.drawingRoute;
     }
 
     /**

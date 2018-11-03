@@ -9,8 +9,10 @@
 
 "use strict";
 
-const Maze = require('./maze');
-const GeneticAlgorithm = require('./ga');
+const Maze              = require('./maze');
+const GeneticAlgorithm  = require('./ga');
+let dataHandler         = require('./lib/dataHandler')
+const config            = require('./config/config.js');
 
 
 /**
@@ -70,11 +72,18 @@ let population = ga.initPopulation( 128 );
 ga.evalPopulation( population, maze );
 
 let generation = 1;
+let all_routes = [];
+
+dataHandler.clearData(config.filename);
 
 // Start evolution loop
 while(ga.isTerminationConditionMet(generation, maxGenerations) == false) {
     // Print fittest individual from population
     var fittest = population.getFittest(0);
+    let route = fittest.getDrawingRoute();
+
+    all_routes.push(route);
+
     console.log(`Gen ${generation}, Best solution F(${fittest.getFitness()}): [ ${fittest._toString()} ]` );
 
     // Apply crossover
@@ -91,9 +100,14 @@ while(ga.isTerminationConditionMet(generation, maxGenerations) == false) {
 }
 
 // Print results
-console.log(`Stopped after ${generation - 1} generations.`);
+console.log(`Stopped after ${maxGenerations} generations.`);
 var fittest = population.getFittest(0);
 console.log(`Best solution F(${fittest.getFitness()}): [ ${fittest._toString()} ]`);
+
+dataHandler.recordRoutes(all_routes, config.filename);
+
+let data = dataHandler.readData(config.filename);
+console.log('DONE.')
 
 
 

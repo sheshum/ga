@@ -153,6 +153,7 @@ function calcFitness(individual, maze) {
     robot.run();
     var fitness = maze.scoreRoute(robot.getRoute());
     individual.setFitness(fitness);
+    individual.setDrawingRoute(robot.getDrawingRoute());
     return fitness;
 }
 
