@@ -74,7 +74,7 @@ ga.evalPopulation( population, maze );
 let generation = 1;
 let all_routes = [];
 
-dataHandler.clearData(config.filename);
+dataHandler.clearData(config.file_path);
 
 // Start evolution loop
 while(ga.isTerminationConditionMet(generation, maxGenerations) == false) {
@@ -104,9 +104,9 @@ console.log(`Stopped after ${maxGenerations} generations.`);
 var fittest = population.getFittest(0);
 console.log(`Best solution F(${fittest.getFitness()}): [ ${fittest._toString()} ]`);
 
-dataHandler.recordRoutes(all_routes, config.filename);
+dataHandler.recordRoutes(all_routes, config.file_path);
 
-let data = dataHandler.readData(config.filename);
+let data = dataHandler.readData(config.file_path);
 console.log('DONE.')
 
 
